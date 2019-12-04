@@ -45,7 +45,7 @@ function getCombinedStringIdx(nestedArr){
       newArr[0] = Math.min(prevArr[0], currArr[0])
       newArr[1] = Math.max(prevArr[1], currArr[1])
       nestedArr[i] = newArr
-      nestedArr.splice(i - 1, i)
+      nestedArr.splice(i - 1, 1)
       i--
     }
   }
