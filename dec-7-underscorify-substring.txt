@@ -1,0 +1,121 @@
+Write a function that takes in two strings: a main string and a potential
+substring of the main string. The function should return a version of the main string with
+every instance of the substring in it wrapped between underscores. If two 
+instances of the substring in the main string overlap each other or sit side by side, the
+underscores relevant to these two substrings should only appear on the far
+left of the left substring and on the far right of the right substring. If the main string
+does not contain the other string at all, return the main string intact.
+
+Sample input:"testthis is a testtest to see if testestest it works","test"
+Sample output:"_test_this is a _testtest_to see if_testestest_it works"
+testtest
+Time -> O(N * M)
+Space -> O(N)
+main(bigStr,substr)
+1 - find all the substr in main bigstr
+let subStrIdxesArr = getSubStrIdx(bigStr,substr) [[0,3], [4,7]] -> [[0,7]] // Returns nested array
+
+2 - check if subStr is in bigStr
+if(subStrIdxesArr.length === 0) return bigStr
+
+3- combined sub str idx
+let combinedSubStr = getCombinedSubStr(subStrIdxesArr) // return nested array
+
+4- add thee underscores
+  - split arr down to single letters
+ bigStrArr = bigStr.split("")
+  for(let arr of combinedSubStr){
+    let startIdx = arr[0]
+    let endIdx = arr[1]
+    bigStrArr[startIdx] = "_" + bigStrArr[startIdx]
+    bigStrArr[endIdx] = bigStrArr[endIdx] + "_"
+  }
+  
+  return bigStrArr.join("")
+  
+
+  
+  function getSubStrIdx(bigStr, substr){
+    let result = []
+    
+    for(let pos = bigStr.indexOf(subStr, 0); pos != -1; pos = bigStr.indexOf(subStr, pos + 1)){
+      result.push([pos, pos + (substr.length - 1)])
+    }
+    return result
+  } // return array
+  
+  
+  function getCombinedSubStr(array){
+    
+    for(let i = 1; i < array.length; i++){
+      let currArr = array[i]
+      let prevArr = array[i - 1]
+      if(prevArr[1] + 1 >= currArr[0]){
+        let newArr = []
+        newArr[0] = Math.min(prevArr[0], currArr[0])
+        newArr[1] = Math.max(prevArr[1], currArr[1])
+        array[i] = newArr
+        array.splice(i - 1, 1)
+        i--
+      }
+    }
+    return array
+  }// return array
+  
+  
+
+
+function underscorifySubstring(string, substring) {
+  let allSubStrIdx = getAllSubStrIdx(string,substring) // Returns array
+  if(allSubStrIdx.length === 0) return string
+  let combinedSubStr = getCombinedSubStr(allSubStrIdx) // Returns array
+  
+  let stringArr = string.split("")
+  
+  for(let arr of combinedSubStr){
+    let startIdx = arr[0]
+    let endIdx = arr[1]
+    stringArr[startIdx] = "_" + stringArr[startIdx]
+    stringArr[endIdx] = startingArr[endIdx] + "_"
+  }
+  return stringArr.join("")
+}
+
+
+function getAllSubStrIdx(string,substring){
+   let result = []
+  for(let pos = string.indexOf(substring,0); pos != -1 ; pos = string.indexof(substring, pos + 1)){
+    result.push([pos, pos + substring.length - 1])
+  }
+  return result
+}
+
+
+function getCombinedSubStr(array){
+  
+  for(let i = 1; i < array.length; i++){
+    let currArr = array[i]
+    let prevArr = array[i - 1]
+    if(prevArr[1] + 1 >= currArr[0]){
+      let newArr = []
+      newArr[0] = Math.min(currArr[0], prevArr[0])
+      newArr[1] = Math.max(currArr[1], prevArr[1])
+      array[i] = newArr
+      array.splice(i - 1, 1)
+      i--
+    }
+  }
+  
+  return array
+}
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
